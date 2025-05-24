@@ -162,6 +162,19 @@ public class TrainingServiceimpl implements TrainingService {
 
         emailService.sendEmail(user.getEmail(), subject, body);
 
+
+
+
+        String subject1 = "New Training Reservation";
+        String body1 = "Dear " + training.getTrainer().getName() + ",\n\n"
+                + "User " + user.getName() + " has successfully reserved a training session scheduled for " + formattedDateTime + ".\n\n"
+                + "Best regards,\n"
+                + "Your Training App Team";
+
+
+
+        emailService.sendEmail(training.getTrainer().getEmail(), subject1, body1);
+
         return true;
 
 
@@ -192,7 +205,8 @@ public class TrainingServiceimpl implements TrainingService {
             throw new IllegalArgumentException("Ne može se otkazati trening manje  sati pre termina");
         }
 
-        training.setStatus(ReservationStatus.CANCELED);
+        training.setStatus(ReservationStatus.ACTIVE);
+        training.setUser(null);
         training.setCanceledAt(LocalDateTime.now());
         trainingRepository.save(training);
 
@@ -225,7 +239,8 @@ public class TrainingServiceimpl implements TrainingService {
                 .orElseThrow(() -> new ResourceNotFoundException("Trainer not found"));
 
 
-        training.setStatus(ReservationStatus.CANCELED);
+        training.setStatus(ReservationStatus.ACTIVE);
+        training.setUser(null);
         training.setCanceledAt(LocalDateTime.now());
         trainingRepository.save(training);
 
@@ -275,6 +290,24 @@ public class TrainingServiceimpl implements TrainingService {
         for (Training training : trainings) {
             trainingDtos.add(convertToDto(training));
         }
+        return trainingDtos;
+    }
+
+
+    @Override
+    public List<TrainingDto> getTrainingsByUserEmail(GetUserTrainingsDto getUserTrainingsDto) {
+
+        List<TrainingDto> trainingDtos = new ArrayList<>();
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime endOfDay = now.toLocalDate().atTime(23, 59, 59);
+
+        List<Training> trainings = trainingRepository.findAllByUserEmailOrderByStartTimeAsc(getUserTrainingsDto.getEmail());
+
+        for (Training training : trainings) {
+            trainingDtos.add(convertToDto(training));
+        }
+
         return trainingDtos;
     }
 

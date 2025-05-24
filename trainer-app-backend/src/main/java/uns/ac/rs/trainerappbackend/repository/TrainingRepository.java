@@ -12,6 +12,9 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
 
     List<Training> findByTrainerIdAndStartTimeBetween(Long trainerId, LocalDateTime start, LocalDateTime end);
 
+    List<Training> findAllByUserEmailOrderByStartTimeAsc(String email);
+
+
 
 
 }

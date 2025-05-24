@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/trainings")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TrainingController {
 
     private final TrainingService trainingService;
@@ -21,7 +22,7 @@ public class TrainingController {
         this.trainingService = trainingService;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<TrainingDto> createTraining(@Valid @RequestBody CreateTrainingDto dto) {
         TrainingDto createdTraining = trainingService.createTraining(dto);
         return new ResponseEntity<>(createdTraining, HttpStatus.CREATED);
@@ -62,6 +63,12 @@ public class TrainingController {
     @GetMapping("/{trainerId}/week")
     public ResponseEntity<List<TrainingDto>> getTrainingsForTrainerForWeek(@PathVariable Long trainerId) {
         List<TrainingDto> trainings = trainingService.getTrainingsForTrainerForCurrentWeek(trainerId);
+        return ResponseEntity.ok(trainings);
+    }
+
+    @PostMapping("/user")
+    public ResponseEntity<List<TrainingDto>> getTrainingsByUserEmail(@RequestBody GetUserTrainingsDto getUserTrainingsDto) {
+        List<TrainingDto> trainings = trainingService.getTrainingsByUserEmail(getUserTrainingsDto);
         return ResponseEntity.ok(trainings);
     }
 

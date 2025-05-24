@@ -4,11 +4,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class CancelReservationDto {
+public class GetUserTrainingsDto {
 
     @NotNull
-    private String email;
-
-    @NotNull
-    private Long trainingId;
+    String email;
 }

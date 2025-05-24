@@ -1,0 +1,129 @@
+<br>
+<br>
+
+
+
+<div *ngIf="trainerId > 0">
+  <button 
+  *ngIf="trainerId > 0"
+   (click)="goToTrainer()"
+  style="
+    position: fixed; 
+    top: 60px; /* pomeri ispod navbar-a */
+    right: 10px; 
+    background-color: #ADD8E6;
+    border: none; 
+    padding: 8px 16px; 
+    cursor: pointer; 
+    font-weight: bold;
+    border-radius: 4px;
+    z-index: 1000;
+  ">
+  Create Training
+</button>
+
+
+ <h2 style="display: block; width: 100%; text-align: center;">Trainings Today</h2>
+ <br>
+  <div class="trainings-container">
+    <ng-container *ngIf="trainingsTodayFromNow.length > 0; else noTrainingsToday">
+      <div *ngFor="let training of trainingsTodayFromNow" class="training-card">
+        <div class="training-info">
+          <p><strong>Start:</strong> {{ training.startTime | date:'short' }}</p>
+          <p><strong>End:</strong> {{ training.endTime | date:'short' }}</p>
+          <p><strong>Duration:</strong> {{ training.duration }}</p>
+          <p><strong>Status:</strong> {{ training.status }}</p>
+          <p *ngIf="training.user"><strong>User:</strong> {{ training.user.name }} ({{ training.user.email }})</p>
+          <p><strong>Trainer:</strong> {{ training.trainer.name }}</p>
+        </div>
+        <div class="training-actions">
+          <button (click)="cancelTraining(training.id)">Cancel</button>
+          <button 
+  (click)="reserveTraining(training.id)" 
+  [disabled]="training.status === 'RESERVED'">
+  Reserve
+</button>
+
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #noTrainingsToday>
+      <p style="font-style: italic; color: #666;">No trainings today</p>
+    </ng-template>
+  </div>
+<br>
+ <h2 style="display: block; width: 100%; text-align: center;">Trainings This Week</h2>
+  <div class="trainings-container">
+    <ng-container *ngIf="trainingsThisWeek.length > 0; else noTrainingsWeek">
+      <div *ngFor="let training of trainingsThisWeek" class="training-card">
+        <div class="training-info">
+          <p><strong>Start:</strong> {{ training.startTime | date:'short' }}</p>
+          <p><strong>End:</strong> {{ training.endTime | date:'short' }}</p>
+          <p><strong>Duration:</strong> {{ training.duration }}</p>
+          <p><strong>Status:</strong> {{ training.status }}</p>
+          <p *ngIf="training.user"><strong>User:</strong> {{ training.user.name }} ({{ training.user.email }})</p>
+          <p><strong>Trainer:</strong> {{ training.trainer.name }}</p>
+        </div>
+        <div class="training-actions">
+          <button (click)="openCancelModal(training)">Cancel</button>
+         <button 
+            (click)="reserveTraining(training.id)" 
+            [disabled]="training.status === 'RESERVED'">
+            Reserve
+        </button>
+
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #noTrainingsWeek>
+      <p style="font-style: italic; color: #666;">No trainings this week</p>
+    </ng-template>
+  </div>
+
+</div>
+
+
+
+<div *ngIf="isCancelModalOpen" class="modal-backdrop">
+  <div class="modal-content">
+    <h3>Otkaži trening</h3>
+    
+    <form (ngSubmit)="submitCancelForm()">
+      <label>Email korisnika:</label>
+      <input [(ngModel)]="cancelForm.emailUser" name="emailUser" required />
+
+      <label>Access kod:</label>
+      <input [(ngModel)]="cancelForm.accessCode" name="accessCode" required />
+
+      <button type="submit">Pošalji</button>
+      <button type="button" (click)="closeCancelModal()">Zatvori</button>
+    </form>
+  </div>
+</div>
+
+
+<div class="modal"  tabindex="-1" [class.show]="isAddExerciseModalOpen" [style.display]="isAddExerciseModalOpen ? 'block' : 'none'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        
+        <app-create-reservation
+          [trainingId]="selectedTrainingId"
+          (reservationCreated)="onReservationCreated()">
+        </app-create-reservation>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="closeAddExerciseModalOpen()">Zatvori</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+

@@ -1,0 +1,64 @@
+<br>
+<br>
+<div class="training-list">
+  <div *ngFor="let training of trainings" class="training-row">
+    <div class="training-info">
+      <div class="time-range">
+          {{ training.startTime | date:'dd.MM.yyyy HH:mm' }} - {{ training.endTime | date:'HH:mm' }}
+      </div>
+
+      <div class="status">
+        Status: <strong>{{ training.status }}</strong>
+      </div>
+      <div class="trainer">
+        Trener: <strong>{{ training.trainer.name }}</strong>
+      </div>
+    </div>
+    <button class="action-button" (click)="onAction(training)">Reserve</button>
+  </div>
+</div>
+
+
+
+
+
+<div class="modal-backdrop" *ngIf="selectedTraining">
+  <div class="modal-center">
+    <div class="modal-content">
+      <h3>Enter your email for the trainer: {{ selectedTraining.trainer.name }}</h3>
+
+      <input
+        type="email"
+        [(ngModel)]="emailInput"
+        placeholder="Unesite email"
+        required
+      />
+      
+      <div *ngIf="emailError" class="error-text">{{ emailError }}</div>
+
+      <div class="modal-buttons">
+        <button (click)="confirmEmail()">Confirm</button>
+        <button (click)="cancelEmailInput()">Cancel</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal-backdrop" *ngIf="emailNotRegistered">
+  <div class="modal-center">
+    <div class="modal-content">
+      <h3>Email is not registered in the system.</h3>
+      
+      <button (click)="emailNotRegistered = false">Close</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+

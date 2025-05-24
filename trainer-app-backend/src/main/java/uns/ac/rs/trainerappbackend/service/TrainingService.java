@@ -20,5 +20,7 @@ public interface TrainingService {
 
     List<TrainingDto> getTrainingsForTrainerForCurrentWeek(Long trainerId);
 
+    List<TrainingDto> getTrainingsByUserEmail(GetUserTrainingsDto getUserTrainingsDto);
+
 
 }

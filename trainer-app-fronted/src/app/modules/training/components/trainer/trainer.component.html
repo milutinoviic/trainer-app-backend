@@ -1,0 +1,86 @@
+<div
+  class="fullscreen-wrapper d-flex justify-content-center align-items-center"
+  style="height: 100vh;"
+>
+  <div class="card shadow p-4" style="min-width: 400px; max-width: 500px; width: 100%;">
+   
+    <div class="text-center mb-4">
+      <h2 class="form-title text-uppercase">Create New Training</h2>
+    </div>
+
+    <form [formGroup]="trainingForm" (ngSubmit)="onSubmit()">
+    
+      <div class="form-group mb-4">
+        <label class="form-label text-uppercase d-block mb-1 mr-2 lbl">Start Time</label>
+        <input
+          type="datetime-local"
+          class="form-control form-control-lg"
+          formControlName="startTime"
+          required
+        />
+     
+<div
+  *ngIf="
+    trainingForm.get('startTime')?.errors?.['required'] &&
+    (trainingForm.get('startTime')?.dirty || trainingForm.get('startTime')?.touched)
+  "
+  class="text-danger mt-2 fs-6"
+>
+  Start time is required.
+</div>
+
+
+<div
+  *ngIf="
+    trainingForm.get('startTime')?.errors?.['pastDate'] &&
+    (trainingForm.get('startTime')?.dirty || trainingForm.get('startTime')?.touched)
+  "
+  class="text-danger mt-2 fs-6"
+>
+  You cannot schedule training in the past.
+</div>
+<div
+  *ngIf="
+    trainingForm.get('startTime')?.errors?.['invalidMinutes'] &&
+    (trainingForm.get('startTime')?.dirty || trainingForm.get('startTime')?.touched)
+  "
+  class="text-danger mt-2 fs-6"
+>
+  Time must be on the hour or half hour (e.g. 9:00, 9:30).
+</div>
+      </div>
+
+      
+      <div class="form-group mb-4">
+        <label class="form-label text-uppercase d-block mb-1">Duration</label>
+        <select
+          class="form-control form-control-lg"
+          formControlName="duration"
+          required
+        >
+          <option value="">-- Select duration --</option>
+          <option value="HALF_HOUR">30 minutes</option>
+          <option value="ONE_HOUR">60 minutes</option>
+        </select>
+        <div
+          *ngIf="
+            trainingForm.get('duration')?.invalid &&
+            (trainingForm.get('duration')?.dirty || trainingForm.get('duration')?.touched)
+          "
+          class="text-danger mt-2 fs-6"
+        >
+          Duration is required.
+        </div>
+      </div>
+
+      
+      <button
+        type="submit"
+        class="btn btn-success w-100 py-3 fs-5 text-uppercase"
+        [disabled]="trainingForm.invalid"
+      >
+        Create Training
+      </button>
+    </form>
+  </div>
+</div>

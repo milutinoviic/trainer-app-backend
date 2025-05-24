@@ -1,0 +1,15 @@
+.access-denied-container {
+  text-align: center;
+  margin-top: 100px;
+  font-family: Arial, sans-serif;
+  color: #c0392b; 
+}
+
+.access-denied-container h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.access-denied-container p {
+  font-size: 18px;
+}

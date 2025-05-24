@@ -1,0 +1,77 @@
+
+<div *ngIf="showModal" 
+     style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+  <div style="background: white; padding: 30px; border-radius: 8px; width: 300px; text-align: center; position: relative;">
+  
+    <button 
+      (click)="closeModalAndGoHome()" 
+      style="
+        position: absolute; 
+        top: 10px; 
+        right: 10px; 
+        background: transparent; 
+        border: none; 
+        font-size: 28px; 
+        font-weight: bold; 
+        color: #333; 
+        cursor: pointer;
+        line-height: 1;
+      ">
+      &times;
+    </button>
+  
+    <h3>Unesite email korisnika</h3>
+    <input 
+      [(ngModel)]="userEmail" 
+      placeholder="Email korisnika" 
+      style="width: 100%; padding: 10px; margin-top: 15px; font-size: 16px; border-radius: 4px; border: 1px solid #ccc;"
+      (keydown.enter)="loadTrainings()"
+      autofocus
+    />
+    <button 
+      (click)="loadTrainings()" 
+      style="margin-top: 20px; width: 100%; padding: 10px; background-color: #007bff; 
+             color: white; border: none; border-radius: 4px; cursor: pointer;"
+    >
+      Potvrdi
+    </button>
+  </div>
+</div>
+
+
+
+<div *ngIf="!showModal" style="max-width: 700px; margin: 20px auto; font-family: Arial, sans-serif;">
+  <h2>Treninzi korisnika: {{ userEmail }}</h2>
+
+  <ul style="list-style: none; padding: 0;">
+    <li *ngFor="let training of trainings" 
+        style="background-color: #f9f9f9; padding: 12px 15px; margin-bottom: 10px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <strong>Trening #{{training.id}}</strong> — 
+        Status: {{training.status}} — 
+        Početak: {{training.startTime | date:'dd.MM.yyyy, HH:mm'}}
+      </div>
+      <button 
+        (click)="onCancelClick(training.id)" 
+        [disabled]="isCancelDisabled(training.startTime)"
+        [ngStyle]="{
+          'background-color': isCancelDisabled(training.startTime) ? '#a94442' : '#dc3545',
+          'color': 'white',
+          'border': 'none',
+          'padding': '6px 12px',
+          'border-radius': '4px',
+          'cursor': isCancelDisabled(training.startTime) ? 'not-allowed' : 'pointer',
+          'opacity': isCancelDisabled(training.startTime) ? '0.7' : '1'
+        }"
+        title="Otkaži trening"
+      >
+        Otkaži
+      </button>
+    </li>
+  </ul>
+
+  <p *ngIf="trainings.length === 0" style="text-align:center; color: #888; margin-top: 20px;">
+    Nema treninga za uneti email.
+  </p>
+</div>

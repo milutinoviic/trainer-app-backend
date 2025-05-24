@@ -9,6 +9,7 @@ import uns.ac.rs.trainerappbackend.service.TrainerService;
 
 @RestController
 @RequestMapping("/api/trainer")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TrainerController {
 
     private TrainerService trainerService;

@@ -1,0 +1,74 @@
+<nav class="navbar" style="display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 1rem; background-color: #343a40; color: white; font-family: Arial, sans-serif;">
+  <div class="navbar-title" style="font-weight: bold; font-size: 1.5rem;">
+    TreningAPP
+  </div>
+  
+  <div style="display: flex; gap: 0.75rem;">
+
+     <button
+      routerLink="/home"
+      style="background-color: #17a2b8; border: none; color: white; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-weight: 600; transition: background-color 0.3s;"
+      (mouseover)="hoverButton($event, '#117a8b')"
+      (mouseout)="hoverButton($event, '#17a2b8')">
+      Home
+    </button>
+    
+ <button
+      routerLink="/reservations"
+      style="background-color: #28a745; border: none; color: white; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-weight: 600; transition: background-color 0.3s;"
+      onmouseover="this.style.backgroundColor='#1e7e34'"
+      onmouseout="this.style.backgroundColor='#28a745'">
+      Reservations
+    </button>
+
+    <button 
+      class="profile-btn" 
+      (click)="onProfileClick()" 
+      style="background-color: #007bff; border: none; color: white; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-weight: 600; transition: background-color 0.3s;"
+      onmouseover="this.style.backgroundColor='#0056b3'"
+      onmouseout="this.style.backgroundColor='#007bff'">
+      Profil
+    </button>
+
+    <button 
+      class="btn-clear-trainer" 
+      (click)="clearTrainerId()" 
+      [disabled]="!hasTrainerId" 
+      style="background-color: #dc3545; border: none; color: white; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-weight: 600; transition: background-color 0.3s;"
+      onmouseover="this.style.backgroundColor='#a71d2a'"
+      onmouseout="this.style.backgroundColor='#dc3545'">
+      Obriši Me
+    </button>
+
+    
+  </div>
+</nav>
+
+
+<div class="modal" tabindex="-1" [class.show]="isModalOpen" [style.display]="isModalOpen ? 'block' : 'none'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Trainer verification</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form" (ngSubmit)="verify()">
+          <label for="accessCode">Unesite kod za pristup:</label>
+          <input id="accessCode" formControlName="accessCode" type="text" class="form-control" required />
+          <div *ngIf="form.get('accessCode')?.invalid && form.get('accessCode')?.touched" class="text-danger">
+            Code is required.
+          </div>
+          <button type="submit" class="btn btn-primary mt-3" [disabled]="form.invalid || loading">
+            {{ loading ? 'Verifying...' : 'Verify' }}
+          </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
