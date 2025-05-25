@@ -37,7 +37,7 @@
       style="background-color: #dc3545; border: none; color: white; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-weight: 600; transition: background-color 0.3s;"
       onmouseover="this.style.backgroundColor='#a71d2a'"
       onmouseout="this.style.backgroundColor='#dc3545'">
-      Obriši Me
+      Reset Trainer
     </button>
 
     
@@ -54,7 +54,7 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="form" (ngSubmit)="verify()">
-          <label for="accessCode">Unesite kod za pristup:</label>
+          <label for="accessCode">Enter access code:</label>
           <input id="accessCode" formControlName="accessCode" type="text" class="form-control" required />
           <div *ngIf="form.get('accessCode')?.invalid && form.get('accessCode')?.touched" class="text-danger">
             Code is required.
@@ -70,5 +70,15 @@
     </div>
   </div>
 </div>
+
+
+
+<div *ngIf="showPopup" class="popup-backdrop">
+  <div class="popup-content">
+    <p>{{ popupMessage }}</p>
+    <button class="btn btn-primary" (click)="showPopup = false">Close</button>
+  </div>
+</div>
+
 
 

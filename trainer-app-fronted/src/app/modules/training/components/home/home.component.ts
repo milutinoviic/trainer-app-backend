@@ -65,6 +65,8 @@ confirmEmail(): void {
         ? this.successMessage = 'Reservation created successfully'
         : this.errorMessage = 'Reservation failed';
       this.resetForm();
+      this.loadTrainings();
+
     },
     err => {
       console.error('Greška pri rezervaciji:', err);

@@ -39,8 +39,8 @@ export class CreateReservationComponent implements OnChanges{
         alert('Uspešno ste rezervisali!');
       },
       error: (err) => {
-        console.error('Greška pri rezervaciji', err);
-        alert('Greška pri rezervaciji.');
+        alert("Email isn't verification");
+
       }
     });
   }

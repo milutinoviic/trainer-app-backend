@@ -16,7 +16,10 @@ export class NavbarComponent {
   isModalOpen = false;
   form!: FormGroup;
   loading = false;
-   hasTrainerId = false;  
+  hasTrainerId = false;  
+  showPopup = false;
+  popupMessage = '';
+
 
   constructor(private fb: FormBuilder, private trainerService: TrainerService, private router: Router) {}
 
@@ -58,14 +61,18 @@ verify(): void {
      
       localStorage.setItem('trainerId', res.id.toString());
 
-      alert(`You have successfully verified yourself.`);
+      this.popupMessage = 'You have successfully verified yourself.';
+      this.showPopup = true;
+
       this.closeModal();
       this.checkTrainerId();
       this.router.navigate(['/profile']);
 
     },
     error: (err) => {
-      alert('Greška pri verifikaciji koda.');
+      this.popupMessage = 'Error verifying, the access code does not exist';
+      this.showPopup = true;
+
       this.loading = false;
     }
   });

@@ -67,7 +67,7 @@ public class TrainingController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<List<TrainingDto>> getTrainingsByUserEmail(@RequestBody GetUserTrainingsDto getUserTrainingsDto) {
+    public ResponseEntity<List<TrainingDto>> getTrainingsByUserEmail(@Valid @RequestBody GetUserTrainingsDto getUserTrainingsDto) {
         List<TrainingDto> trainings = trainingService.getTrainingsByUserEmail(getUserTrainingsDto);
         return ResponseEntity.ok(trainings);
     }

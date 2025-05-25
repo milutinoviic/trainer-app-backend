@@ -37,7 +37,7 @@
           <p><strong>Trainer:</strong> {{ training.trainer.name }}</p>
         </div>
         <div class="training-actions">
-          <button (click)="cancelTraining(training.id)">Cancel</button>
+           <button (click)="openCancelModal(training)">Cancel</button>
           <button 
   (click)="reserveTraining(training.id)" 
   [disabled]="training.status === 'RESERVED'">
@@ -83,21 +83,23 @@
 </div>
 
 
+<div *ngIf="isCancelModalOpen" class="custom-modal-backdrop">
+  <div class="custom-modal">
+    <div class="custom-modal-header">
+      <h3>Cancel training</h3>
+    </div>
+    <div class="custom-modal-body">
+      <form (ngSubmit)="submitCancelForm()">
+        <label>Email:</label>
+        <input [(ngModel)]="cancelForm.emailUser" name="emailUser" required />
 
-<div *ngIf="isCancelModalOpen" class="modal-backdrop">
-  <div class="modal-content">
-    <h3>Otkaži trening</h3>
-    
-    <form (ngSubmit)="submitCancelForm()">
-      <label>Email korisnika:</label>
-      <input [(ngModel)]="cancelForm.emailUser" name="emailUser" required />
+        <label>Your Access cod:</label>
+        <input [(ngModel)]="cancelForm.accessCode" name="accessCode" required />
 
-      <label>Access kod:</label>
-      <input [(ngModel)]="cancelForm.accessCode" name="accessCode" required />
-
-      <button type="submit">Pošalji</button>
-      <button type="button" (click)="closeCancelModal()">Zatvori</button>
-    </form>
+        <button type="submit" class="btn btn-primary me-2">Confirm</button>
+        <button type="button" (click)="closeCancelModal()"  class="btn btn-secondary">Close</button>
+      </form>
+    </div>
   </div>
 </div>
 
@@ -115,11 +117,36 @@
         </app-create-reservation>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" (click)="closeAddExerciseModalOpen()">Zatvori</button>
+        <button type="button" class="btn btn-danger" (click)="closeAddExerciseModalOpen()">Close</button>
       </div>
     </div>
   </div>
 </div>
+
+
+<div *ngIf="showPopup" class="popup-backdrop">
+  <div class="popup-content">
+    <p>{{ popupMessage }}</p>
+    <button class="btn btn-primary" (click)="showPopup = false">Close</button>
+  </div>
+</div>
+
+
+<div *ngIf="showErrorCancelModal" class="custom-modal-backdrop">
+  <div class="custom-modal">
+    <div class="custom-modal-header">
+      <h3>Error</h3>
+    </div>
+    <div class="custom-modal-body">
+      <p>{{ errorCancelMessage }}</p>
+    </div>
+    <div class="custom-modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="showErrorCancelModal = false">Close</button>
+    </div>
+  </div>
+</div>
+
+
 
 
 

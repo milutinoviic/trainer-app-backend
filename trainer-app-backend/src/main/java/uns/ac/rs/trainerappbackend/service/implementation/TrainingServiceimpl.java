@@ -45,7 +45,6 @@ public class TrainingServiceimpl implements TrainingService {
     }
 
 
-
     @Override
     public TrainingDto createTraining(CreateTrainingDto dto) {
 
@@ -104,7 +103,6 @@ public class TrainingServiceimpl implements TrainingService {
 
         }
 
-
         TrainerTrainingDto trainerDto = new TrainerTrainingDto();
         trainerDto.setId(training.getTrainer().getId());
         trainerDto.setName(training.getTrainer().getName());
@@ -119,9 +117,11 @@ public class TrainingServiceimpl implements TrainingService {
     public List<TrainingDto> getAllReservations() {
         List<Training> trainings = trainingRepository.findAll();
         List<TrainingDto> activeReservations = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
 
         for (Training training : trainings) {
-           if(training.getStatus().equals(ReservationStatus.ACTIVE)){
+           if(training.getStatus().equals(ReservationStatus.ACTIVE)&&
+                   training.getStartTime().isAfter(now)){
                activeReservations.add(convertToDto(training));
            }
         }
@@ -151,7 +151,6 @@ public class TrainingServiceimpl implements TrainingService {
         training.setStatus(ReservationStatus.RESERVED);
         trainingRepository.save(training);
 
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. 'at' HH:mm");
         String formattedDateTime = training.getStartTime().format(formatter);
 
@@ -162,16 +161,11 @@ public class TrainingServiceimpl implements TrainingService {
 
         emailService.sendEmail(user.getEmail(), subject, body);
 
-
-
-
         String subject1 = "New Training Reservation";
         String body1 = "Dear " + training.getTrainer().getName() + ",\n\n"
                 + "User " + user.getName() + " has successfully reserved a training session scheduled for " + formattedDateTime + ".\n\n"
                 + "Best regards,\n"
                 + "Your Training App Team";
-
-
 
         emailService.sendEmail(training.getTrainer().getEmail(), subject1, body1);
 
@@ -210,7 +204,6 @@ public class TrainingServiceimpl implements TrainingService {
         training.setCanceledAt(LocalDateTime.now());
         trainingRepository.save(training);
 
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy. 'at' HH:mm");
         String formattedDateTime = training.getStartTime().format(formatter);
 
@@ -238,6 +231,10 @@ public class TrainingServiceimpl implements TrainingService {
         Trainer trainer = trainerRepository.findTrainerByAccessCode(dto.getAccessCode())
                 .orElseThrow(() -> new ResourceNotFoundException("Trainer not found"));
 
+        if(!training.getTrainer().getId().equals(trainer.getId())){
+            throw new BadRequestException("You are not that trainer");
+
+        }
 
         training.setStatus(ReservationStatus.ACTIVE);
         training.setUser(null);

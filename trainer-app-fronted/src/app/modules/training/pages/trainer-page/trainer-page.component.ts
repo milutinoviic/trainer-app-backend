@@ -15,6 +15,12 @@ export class TrainerPageComponent {
   trainingsTodayFromNow: TrainingDto[] = [];
   trainingsThisWeek: TrainingDto[] = [];
   trainerId: number = 0;
+  showPopup = false;
+  popupMessage = '';
+  errorCancelMessage: string = '';
+  showErrorCancelModal: boolean = false;
+
+
   
   isCancelModalOpen: boolean = false;
 
@@ -62,11 +68,6 @@ export class TrainerPageComponent {
   }
 
 
-  
-cancelTraining(trainingId: number) {
-  console.log('Cancel training', trainingId);
-  
-}
 
 reserveTraining(trainingId: number) {
   console.log('Reserve training', trainingId);
@@ -77,6 +78,13 @@ reserveTraining(trainingId: number) {
 selectedTrainingId: number | null = null;
 
 openCancelModal(training: TrainingDto) {
+
+  if (training.status === 'ACTIVE') {
+  this.popupMessage = 'Training is not reserved';
+  this.showPopup = true;
+  return
+} 
+
   this.selectedTrainingId = training.id;
   this.cancelForm = {
     emailUser: '',
@@ -91,22 +99,26 @@ closeCancelModal() {
 }
 
 submitCancelForm() {
-
-  console.log('Podaci za otkazivanje treninga:', this.cancelForm);
- 
   this.trainingService.cancelReservationAsTrainer(this.cancelForm).subscribe({
     next: (response) => {
       console.log('Reservation cancelled/reserved successfully', response);
       this.closeCancelModal();
-     
+      this.loadTrainingsThisWeek();
+      this.loadTrainingsTodayFromNow();
     },
     error: (err) => {
-      console.error('Error on reservation cancel', err);
-      
+      if (err.status === 400) {
+        // Prikaži modal sa porukom
+        this.errorCancelMessage = 'You are not the trainer of this training.';
+        this.showErrorCancelModal = true;
+        
+      } else {
+        console.error('Error on reservation cancel', err);
+      }
     }
   });
-  
 }
+
 
 isAddExerciseModalOpen: boolean = false;
 

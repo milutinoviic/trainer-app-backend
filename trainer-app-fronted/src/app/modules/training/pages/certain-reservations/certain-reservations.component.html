@@ -21,7 +21,7 @@
       &times;
     </button>
   
-    <h3>Unesite email korisnika</h3>
+    <h3>Enter your email to see your reservations</h3>
     <input 
       [(ngModel)]="userEmail" 
       placeholder="Email korisnika" 
@@ -34,7 +34,7 @@
       style="margin-top: 20px; width: 100%; padding: 10px; background-color: #007bff; 
              color: white; border: none; border-radius: 4px; cursor: pointer;"
     >
-      Potvrdi
+      Confirm
     </button>
   </div>
 </div>
@@ -42,16 +42,17 @@
 
 
 <div *ngIf="!showModal" style="max-width: 700px; margin: 20px auto; font-family: Arial, sans-serif;">
-  <h2>Treninzi korisnika: {{ userEmail }}</h2>
+  <h2>Your workouts</h2>
 
   <ul style="list-style: none; padding: 0;">
     <li *ngFor="let training of trainings" 
         style="background-color: #f9f9f9; padding: 12px 15px; margin-bottom: 10px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center;">
-      <div>
-        <strong>Trening #{{training.id}}</strong> — 
-        Status: {{training.status}} — 
-        Početak: {{training.startTime | date:'dd.MM.yyyy, HH:mm'}}
-      </div>
+    <div>
+          Status: {{training.status}} — 
+          Start: {{training.startTime | date:'dd.MM.yyyy'}} {{training.startTime | date:'HH:mm'}} - {{training.endTime | date:'HH:mm'}}
+    </div>
+
+
       <button 
         (click)="onCancelClick(training.id)" 
         [disabled]="isCancelDisabled(training.startTime)"

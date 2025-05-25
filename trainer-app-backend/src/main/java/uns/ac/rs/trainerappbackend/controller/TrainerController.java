@@ -1,5 +1,6 @@
 package uns.ac.rs.trainerappbackend.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class TrainerController {
 
 
     @PostMapping("/verify-access-code")
-    public ResponseEntity<TrainerResponseVerifyDto> verifyAccessCode(@RequestBody TrainerVerifyDto trainerVerifyDto) {
+    public ResponseEntity<TrainerResponseVerifyDto> verifyAccessCode(@Valid @RequestBody TrainerVerifyDto trainerVerifyDto) {
         TrainerResponseVerifyDto response = trainerService.getTrainerID(trainerVerifyDto);
         return ResponseEntity.ok(response);
     }
