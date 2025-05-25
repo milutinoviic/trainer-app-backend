@@ -43,7 +43,7 @@ Navbar sadrži sledeće opcije:
 - **Home** — vodi na početnu stranicu  
 - **Reservations** — omogućava korisnicima da pregledaju svoje aktuelne i prošle rezervacije  
 - **Profil** — stranica namenjena isključivo trenerima  
-- **Reset Trainer** — omogućava treneru da resetuje svoj pristupni kod (access code), čime se gubi pristup stranici `/profil` dok se ne unese novi kod  
+- **Reset Trainer** — omogućava treneru da obrise svoj id, čime se gubi pristup stranici `/profil` dok se ne unese ponovo kod (access code)
 
 ---
 
